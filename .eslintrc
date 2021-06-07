@@ -31,7 +31,7 @@
     ]
   },
   "extends": ["airbnb", "prettier"],
-  "plugins": ["prettier"],
+  "plugins": ["prettier", "react"],
   "parser": "babel-eslint",
   "env": {
     "jest": true,
