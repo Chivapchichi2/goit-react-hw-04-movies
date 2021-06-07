@@ -5,16 +5,18 @@ import styles from './ImageGallery.module.css';
 
 const ImageGallery = ({ movies }) => (
   <ul className={styles.ImageGallery}>
-    {movies.map(({ id, poster_path, vote_average, title }) => (
-      <ImageGalleryItem
-        key={id}
-        poster={poster_path}
-        vote={vote_average}
-        title={title}
-        // tags={tags}
-        // largeImageURL={largeImageURL}
-      />
-    ))}
+    {movies.map(
+      ({ id, poster_path: posterPath, vote_average: voteAverage, title }) => (
+        <ImageGalleryItem
+          key={id}
+          poster={posterPath}
+          vote={voteAverage}
+          title={title}
+          // tags={tags}
+          // largeImageURL={largeImageURL}
+        />
+      ),
+    )}
   </ul>
 );
 

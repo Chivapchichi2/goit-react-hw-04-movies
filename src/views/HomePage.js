@@ -15,7 +15,7 @@ class HomePage extends Component {
     const { page } = this.state;
     try {
       const movies = await api.getTrendingMovies(page);
-      this.setState((prevState) => ({
+      this.setState(prevState => ({
         movies: [...prevState.movies, ...movies],
         page: prevState.page + 1,
       }));
