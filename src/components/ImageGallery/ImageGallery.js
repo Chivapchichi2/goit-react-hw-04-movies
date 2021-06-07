@@ -6,26 +6,20 @@ import styles from './ImageGallery.module.css';
 const ImageGallery = ({ movies, onClick }) => (
   // eslint-disable-next-line
   <ul className={styles.ImageGallery} onClick={onClick}>
-    {movies.map(
-      ({
+    {movies.map(({
+ id, poster_path, vote_average, title, 
+}) => (
+      <ImageGalleryItem
+        key={id}
         // eslint-disable-next-line
-        id,
-        poster_path,
-        vote_average,
-        title,
-      }) => (
-        <ImageGalleryItem
-          key={id}
-          // eslint-disable-next-line
-          poster={poster_path}
-          // eslint-disable-next-line
-          vote={vote_average}
-          title={title}
-          // tags={tags}
-          // largeImageURL={largeImageURL}
-        />
-      ),
-    )}
+        poster={poster_path}
+        // eslint-disable-next-line
+        vote={vote_average}
+        title={title}
+        // tags={tags}
+        // largeImageURL={largeImageURL}
+      />
+    ))}
   </ul>
 );
 
