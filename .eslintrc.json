@@ -3,12 +3,14 @@
     "ecmaVersion": 12,
     "sourceType": "module",
     "ecmaFeatures": {
-      "jsx": true
+      "jsx": true,
+      "experimentalObjectRestSpread": true
     }
   },
   "extends": ["eslint:recommended", "plugin:react/recommended", "airbnb"],
   "parser": "babel-eslint",
   "rules": {
+    "camelcase": ["error", { "ignoreDestructuring": true }],
     "indent": [
       "off",
       2,

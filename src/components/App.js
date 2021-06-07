@@ -12,13 +12,23 @@ class App extends Component {
   state = {
     page: 1,
     query: '',
-    images: [],
+    movies: [],
     error: '',
     loader: false,
     showModal: false,
     url: '',
     tag: '',
   };
+
+  componentDidMount() {
+    api.getTrendingMovies(this.state.page).then((movies) => {
+      this.setState((prevState) => ({
+        movies: [...prevState.movies, ...movies],
+        page: prevState.page + 1,
+        error: '',
+      }));
+    });
+  }
 
   componentDidUpdate(prevProps, prevState) {
     const { query } = this.state;
@@ -35,11 +45,11 @@ class App extends Component {
   }
 
   fetchImages = () => {
-    const { query, page } = this.state;
+    const { page, query } = this.state;
     this.setState({ loader: true });
-    return api.findImage(query, page).then((images) => {
+    return api.getByQueryMovies(query, page).then((movies) => {
       this.setState((prevState) => ({
-        images: [...prevState.images, ...images],
+        movies: [...prevState.movies, ...movies],
         page: prevState.page + 1,
         error: '',
       }));
@@ -63,7 +73,7 @@ class App extends Component {
     this.setState({
       page: 1,
       query,
-      images: [],
+      movies: [],
       error: '',
     });
   };
@@ -88,7 +98,7 @@ class App extends Component {
 
   render() {
     const {
- images, error, loader, showModal, url, tag, 
+ movies, error, loader, showModal, url, tag, 
 } = this.state;
     return (
       <Container>
@@ -100,9 +110,9 @@ class App extends Component {
         )}
         <Searchbar onSubmit={this.handleFormData} />
         {error && <Notification message="Something wrong :(" />}
-        <ImageGallery images={images} onClick={this.handleImageClick} />
+        <ImageGallery movies={movies} onClick={this.handleImageClick} />
         {loader && !showModal && <MyLoader />}
-        {!loader && images[0] && <Button onClick={this.handleOnButtonClick} />}
+        {!loader && movies[0] && <Button onClick={this.handleOnButtonClick} />}
       </Container>
     );
   }
