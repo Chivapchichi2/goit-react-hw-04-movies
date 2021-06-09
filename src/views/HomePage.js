@@ -19,47 +19,57 @@ class HomePage extends Component {
       this.setState({ movies: [], page: 1, error: '', loader: true });
       const { page } = this.state;
       const movies = await api.getTrendingMovies(page);
-      this.addTrendingMoviesToState(movies);
+      this.addTrendingMoviesToState(movies, page);
     } catch (err) {
       this.setState({ error: err });
     }
   }
 
-  handleOnButtonClick = () => {
+  handleOnButtonClick = page => () => {
     this.setState({ loader: true });
-    const { page } = this.state;
     api
       .getTrendingMovies(page)
-      .then(this.addTrendingMoviesToState)
+      .then(movies => this.addTrendingMoviesToState(movies, page))
+      .then(
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        }),
+      )
       .catch(error => this.setState({ error }))
       .finally(() => {
         this.setState({ loader: false });
-        window.scrollTo({
-          top: document.documentElement.scrollHeight,
-          behavior: 'smooth',
-        });
       });
   };
 
-  addTrendingMoviesToState = someMovies => {
-    this.setState(prevState => ({
-      movies: Array.from(
-        new Set([...prevState.movies, ...someMovies].map(JSON.stringify)),
-      ).map(JSON.parse),
-      page: prevState.page + 1,
-      error: '',
-      loader: false,
-    }));
+  addTrendingMoviesToState = (movies, page) => {
+    this.setState({ movies, page, error: '', loader: false });
   };
 
   render() {
-    const { error, movies, loader } = this.state;
+    const { error, movies, loader, page } = this.state;
+    const showButton = !loader && movies[0] && true;
     return (
       <>
         {error && <Notification message="Something wrong :(" />}
         <MoviesGallery movies={movies} />
         {loader && <MyLoader />}
-        {!loader && movies[0] && <Button onClick={this.handleOnButtonClick} />}
+        {showButton && (
+          <>
+            <Button
+              onClick={this.handleOnButtonClick(page - 1)}
+              name={`Prev page ${page - 1}`}
+            />
+            <Button
+              onClick={this.handleOnButtonClick(page)}
+              name={`Current page ${page}`}
+            />
+            <Button
+              onClick={this.handleOnButtonClick(page + 1)}
+              name={`Next page  ${page + 1}`}
+            />
+          </>
+        )}
       </>
     );
   }
