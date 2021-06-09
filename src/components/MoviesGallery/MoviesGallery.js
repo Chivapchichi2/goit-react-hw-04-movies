@@ -12,8 +12,6 @@ const MoviesGallery = ({ movies }) => (
           poster={posterPath}
           vote={voteAverage}
           title={title}
-          // tags={tags}
-          // largeImageURL={largeImageURL}
         />
       ),
     )}

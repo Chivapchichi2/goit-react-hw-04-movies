@@ -7,12 +7,12 @@ class Searchbar extends Component {
     query: '',
   };
 
-  handleInputChange = (e) => {
+  handleInputChange = e => {
     const { value } = e.target;
     this.setState({ query: value });
   };
 
-  handleFormSubmit = (e) => {
+  handleFormSubmit = e => {
     e.preventDefault();
     this.props.onSubmit(this.state);
     this.setState({ query: '' });
@@ -21,7 +21,7 @@ class Searchbar extends Component {
   render() {
     const { query } = this.state;
     return (
-      <header className={styles.Searchbar}>
+      <div className={styles.Searchbar}>
         <form className={styles.SearchForm} onSubmit={this.handleFormSubmit}>
           <button type="submit" className={styles.button}>
             <span className={styles.buttonLabel}>Search</span>
@@ -37,7 +37,7 @@ class Searchbar extends Component {
             value={query}
           />
         </form>
-      </header>
+      </div>
     );
   }
 }

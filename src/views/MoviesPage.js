@@ -4,31 +4,49 @@ import Button from '../components/Button';
 import MoviesGallery from '../components/MoviesGallery';
 import MyLoader from '../components/MyLoader';
 import Notification from '../components/Notification';
+import SearchBar from '../components/Searchbar';
 
-class HomePage extends Component {
+class MoviesPage extends Component {
   state = {
     movies: [],
     page: 1,
     error: '',
     loader: false,
+    query: '',
   };
 
-  async componentDidMount() {
-    try {
-      this.setState({ movies: [], page: 1, error: '', loader: true });
-      const { page } = this.state;
-      const movies = await api.getTrendingMovies(page);
-      this.addTrendingMoviesToState(movies, page);
-    } catch (err) {
-      this.setState({ error: err });
+  // async componentDidMount() {
+  //   try {
+  //     this.setState({ movies: [], page: 1, error: '', loader: true });
+  //     const { page } = this.state;
+  //     const movies = await api.getTrendingMovies(page);
+  //     this.addTrendingMoviesToState(movies, page);
+  //   } catch (err) {
+  //     this.setState({ error: err });
+  //   }
+  // }
+
+  async componentDidUpdate(prevProps, prevState) {
+    const { query, page } = this.state;
+    if (query !== prevState.query) {
+      try {
+        // eslint-disable-next-line
+        this.setState({ loader: true });
+        const movies = await api.getByQueryMovies(query, page);
+        this.addMoviesToState(movies, page);
+      } catch (err) {
+        // eslint-disable-next-line
+        this.setState({ error: err });
+      }
     }
   }
 
   handleOnButtonClick = page => () => {
+    const { query } = this.state;
     this.setState({ loader: true });
     api
-      .getTrendingMovies(page)
-      .then(movies => this.addTrendingMoviesToState(movies, page))
+      .getByQueryMovies(query, page)
+      .then(movies => this.addMoviesToState(movies, page))
       .then(
         window.scrollTo({
           top: 0,
@@ -41,8 +59,17 @@ class HomePage extends Component {
       });
   };
 
-  addTrendingMoviesToState = (movies, page) => {
+  addMoviesToState = (movies, page) => {
     this.setState({ movies, page, error: '', loader: false });
+  };
+
+  handleFormData = ({ query }) => {
+    this.setState({
+      page: 1,
+      query,
+      movies: [],
+      error: '',
+    });
   };
 
   render() {
@@ -51,8 +78,9 @@ class HomePage extends Component {
     const disabled = true;
     return (
       <>
+        <SearchBar onSubmit={this.handleFormData} />
         {error && <Notification message="Something wrong :(" />}
-        <MoviesGallery movies={movies} />
+        {movies[0] && <MoviesGallery movies={movies} />}
         {loader && <MyLoader />}
         {showButtons && (
           <>
@@ -84,4 +112,4 @@ class HomePage extends Component {
   }
 }
 
-export default HomePage;
+export default MoviesPage;
