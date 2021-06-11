@@ -53,12 +53,22 @@ const MovieDetails = ({
         <h1 className={styles.Title}>{title}</h1>
         <p className={styles.Tagline}>{tagline}</p>
         <ul className={styles.List}>
-          <li>Genres: {genresName}</li>
-          <li>Budget: {formattedBudget} $</li>
-          <li>Revenue: {formattedRevenue} $</li>
-          <li>Release date: {date}</li>
+          <li>
+            <span className={styles.Span}>Genres:</span> {genresName}
+          </li>
+          <li>
+            <span className={styles.Span}>Budget:</span> {formattedBudget} $
+          </li>
+          <li>
+            <span className={styles.Span}>Revenue:</span> {formattedRevenue} $
+          </li>
+          <li>
+            <span className={styles.Span}>Release date:</span> {date}
+          </li>
         </ul>
-        <p>{overview}</p>
+        <p>
+          <span className={styles.Span}>Overview:</span> {overview}
+        </p>
       </section>
     </article>
   );

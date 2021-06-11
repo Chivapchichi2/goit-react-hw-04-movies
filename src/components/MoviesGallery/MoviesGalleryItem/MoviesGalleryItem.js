@@ -1,11 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from './MoviesGalleryItem.module.css';
 
-const MoviesGalleryItem = ({ poster, title, vote, id }) => (
+const MoviesGalleryItem = ({ poster, title, vote, id, location }) => (
   <li className={styles.MoviesGalleryItem}>
-    <Link to={`/movies/${id}`} id={id}>
+    <Link
+      to={{
+        pathname: `/movies/${id}`,
+        state: { from: location },
+      }}
+    >
       <img
         src={
           poster
@@ -31,6 +36,7 @@ MoviesGalleryItem.propTypes = {
   title: PropTypes.string.isRequired,
   vote: PropTypes.number.isRequired,
   id: PropTypes.number.isRequired,
+  location: PropTypes.shape().isRequired,
 };
 
-export default MoviesGalleryItem;
+export default withRouter(MoviesGalleryItem);

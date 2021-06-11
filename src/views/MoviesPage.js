@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import queryString from 'query-string';
 import api from '../services/galleryApi';
 import Button from '../components/Button';
 import MoviesGallery from '../components/MoviesGallery';
@@ -15,6 +17,15 @@ class MoviesPage extends Component {
     query: '',
   };
 
+  componentDidMount() {
+    const { query } = this.getQueryFromProps(this.props);
+    let { page = 1 } = this.getQueryFromProps(this.props);
+    page = +page;
+    if (query) {
+      this.setState({ query, page });
+    }
+  }
+
   async componentDidUpdate(prevProps, prevState) {
     const { query, page } = this.state;
     if (query !== prevState.query) {
@@ -23,6 +34,7 @@ class MoviesPage extends Component {
         this.setState({ loader: true });
         const movies = await api.getByQueryMovies(query, page);
         this.addMoviesToState(movies, page);
+        this.props.history.push({ search: `query=${query}&page=${page}` });
       } catch (err) {
         // eslint-disable-next-line
         this.setState({ error: err });
@@ -36,12 +48,13 @@ class MoviesPage extends Component {
     api
       .getByQueryMovies(query, page)
       .then(movies => this.addMoviesToState(movies, page))
-      .then(
+      .then(() => {
+        this.props.history.push({ search: `query=${query}&page=${page}` });
         window.scrollTo({
           top: 0,
           behavior: 'smooth',
-        }),
-      )
+        });
+      })
       .catch(error => this.setState({ error }))
       .finally(() => {
         this.setState({ loader: false });
@@ -61,8 +74,9 @@ class MoviesPage extends Component {
     });
   };
 
+  getQueryFromProps = props => queryString.parse(props.location.search);
+
   render() {
-    // console.log(this.props.match.url);
     const { error, movies, loader, page } = this.state;
     const showButtons = !loader && movies[0] && true;
     const disabled = true;
@@ -101,5 +115,11 @@ class MoviesPage extends Component {
     );
   }
 }
+
+MoviesPage.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
 
 export default MoviesPage;

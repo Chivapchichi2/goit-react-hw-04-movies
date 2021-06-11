@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import api from '../services/galleryApi';
-// import Button from '../components/Button';
+import Button from '../components/Button';
 import MovieDetails from '../components/MovieDetails';
 import MyLoader from '../components/MyLoader';
-// import Notification from '../components/Notification';
+import Notification from '../components/Notification';
 
 class MovieDetailsPage extends Component {
   state = { movie: '', loader: false };
@@ -17,8 +17,11 @@ class MovieDetailsPage extends Component {
     this.setState({ movie, loader: false });
   }
 
+  handlerOnButtonClick = from => () => this.props.history.push(from);
+
   render() {
     const { loader, movie } = this.state;
+    const { from } = this.props.location.state;
     const {
       title,
       poster_path: poster,
@@ -33,28 +36,46 @@ class MovieDetailsPage extends Component {
     } = movie;
     return (
       <>
+        <Button name="<<< Go back" onClick={this.handlerOnButtonClick(from)} />
         {loader && <MyLoader />}
-        <MovieDetails
-          title={title}
-          poster={poster}
-          tagline={tagline}
-          genres={genres}
-          budget={budget}
-          revenue={revenue}
-          date={date}
-          overview={overview}
-          average={average}
-          count={count}
-        />
+        {title ? (
+          <MovieDetails
+            title={title}
+            poster={poster}
+            tagline={tagline}
+            genres={genres}
+            budget={budget}
+            revenue={revenue}
+            date={date}
+            overview={overview}
+            average={average}
+            count={count}
+          />
+        ) : (
+          <Notification message="Sorry, no data :(, try again" />
+        )}
       </>
     );
   }
 }
 
+MovieDetailsPage.defaultProps = {
+  match: { params: { movieId: 0 } },
+  location: { state: { from: { pathname: '/' } } },
+};
+
 MovieDetailsPage.propTypes = {
-  match: PropTypes.shape().isRequired,
-  params: PropTypes.shape().isRequired,
-  movieId: PropTypes.number.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      movieId: PropTypes.string,
+    }),
+  }),
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      from: PropTypes.shape(),
+    }),
+  }),
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
 export default MovieDetailsPage;
