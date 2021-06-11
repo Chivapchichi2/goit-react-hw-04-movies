@@ -12,6 +12,7 @@ const MoviesGallery = ({ movies }) => (
           poster={posterPath}
           vote={voteAverage}
           title={title}
+          id={id}
         />
       ),
     )}
@@ -20,7 +21,6 @@ const MoviesGallery = ({ movies }) => (
 
 MoviesGallery.propTypes = {
   movies: PropTypes.arrayOf(PropTypes.shape).isRequired,
-  // onClick: PropTypes.func.isRequired,
 };
 
 export default MoviesGallery;

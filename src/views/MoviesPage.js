@@ -15,17 +15,6 @@ class MoviesPage extends Component {
     query: '',
   };
 
-  // async componentDidMount() {
-  //   try {
-  //     this.setState({ movies: [], page: 1, error: '', loader: true });
-  //     const { page } = this.state;
-  //     const movies = await api.getTrendingMovies(page);
-  //     this.addTrendingMoviesToState(movies, page);
-  //   } catch (err) {
-  //     this.setState({ error: err });
-  //   }
-  // }
-
   async componentDidUpdate(prevProps, prevState) {
     const { query, page } = this.state;
     if (query !== prevState.query) {
@@ -73,6 +62,7 @@ class MoviesPage extends Component {
   };
 
   render() {
+    // console.log(this.props.match.url);
     const { error, movies, loader, page } = this.state;
     const showButtons = !loader && movies[0] && true;
     const disabled = true;
