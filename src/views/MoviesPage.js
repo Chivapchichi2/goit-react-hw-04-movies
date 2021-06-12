@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
-import api from '../services/galleryApi';
+import api from '../services/moviesApi';
 import Button from '../components/Button';
 import MoviesGallery from '../components/MoviesGallery';
 import MyLoader from '../components/MyLoader';

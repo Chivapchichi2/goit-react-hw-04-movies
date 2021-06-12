@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { NavLink, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import api from '../services/galleryApi';
+import api from '../services/moviesApi';
 import Button from '../components/Button';
 import MovieDetails from '../components/MovieDetails';
 import MyLoader from '../components/MyLoader';
@@ -22,6 +23,7 @@ class MovieDetailsPage extends Component {
   render() {
     const { loader, movie } = this.state;
     const { from } = this.props.location.state;
+    const { match } = this.props;
     const {
       title,
       poster_path: poster,
@@ -54,6 +56,30 @@ class MovieDetailsPage extends Component {
         ) : (
           <Notification message="Sorry, no data :(, try again" />
         )}
+        <ul>
+          <li>
+            <NavLink
+              to={{
+                pathname: `${match.url}/cast`,
+                state: { from: from },
+              }}
+            >
+              Cast
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={{
+                pathname: `${match.url}/review`,
+                state: { from: from },
+              }}
+            >
+              Review
+            </NavLink>
+          </li>
+        </ul>
+        <Route path={`${match.path}/cast`} render={() => <h1>Actors</h1>} />
+        <Route path={`${match.path}/review`} render={() => <h1>Text</h1>} />
       </>
     );
   }
@@ -69,6 +95,8 @@ MovieDetailsPage.propTypes = {
     params: PropTypes.shape({
       movieId: PropTypes.string,
     }),
+    path: PropTypes.string,
+    url: PropTypes.string,
   }),
   location: PropTypes.shape({
     state: PropTypes.shape({
