@@ -20,10 +20,11 @@ class Cast extends Component {
       <ul className={styles.Cast}>
         {cast &&
           cast.map(actor => {
-            const { profile_path: img, id, name } = actor;
+            const { profile_path: img, id, name, character } = actor;
             return (
               <li key={id} className={styles.ListItem}>
-                <p>{name}</p>
+                <p className={styles.Name}>{name}</p>
+                <p className={styles.Character}>{character}</p>
                 <img
                   src={
                     img

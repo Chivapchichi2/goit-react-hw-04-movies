@@ -7,6 +7,8 @@ import Cast from '../components/MovieDetails/Cast';
 import MovieDetails from '../components/MovieDetails';
 import MyLoader from '../components/MyLoader';
 import Notification from '../components/Notification';
+import Reviews from '../components/MovieDetails/Reviews';
+import styles from './MovieDetailsPage.module.css';
 
 class MovieDetailsPage extends Component {
   state = { movie: '', loader: false };
@@ -58,30 +60,41 @@ class MovieDetailsPage extends Component {
         ) : (
           <Notification message="Sorry, no data :(, try again" />
         )}
-        <ul>
-          <li>
+        <ul className={styles.List}>
+          <li className={styles.ListItem}>
             <NavLink
               to={{
                 pathname: `${match.url}/cast`,
                 state: { from: from },
               }}
+              className={styles.NavLink}
+              activeClassName={styles.active}
             >
               Cast
             </NavLink>
           </li>
-          <li>
+          <li className={styles.ListItem}>
             <NavLink
               to={{
                 pathname: `${match.url}/review`,
                 state: { from: from },
               }}
+              className={styles.NavLink}
+              activeClassName={styles.active}
             >
               Review
             </NavLink>
           </li>
         </ul>
-        <Route path={`${match.path}/cast`} render={() => <Cast id={id} />} />
-        <Route path={`${match.path}/review`} render={() => <h1>Text</h1>} />
+        {id && (
+          <Route path={`${match.path}/cast`} render={() => <Cast id={id} />} />
+        )}
+        {id && (
+          <Route
+            path={`${match.path}/review`}
+            render={() => <Reviews id={id} />}
+          />
+        )}
       </>
     );
   }

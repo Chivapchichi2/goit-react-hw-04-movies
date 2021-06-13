@@ -32,7 +32,7 @@ class Searchbar extends Component {
             autoComplete="off"
             // eslint-disable-next-line
             autoFocus
-            placeholder="Search images and photos"
+            placeholder="Search movies"
             onChange={this.handleInputChange}
             value={query}
           />
