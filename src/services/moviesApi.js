@@ -14,7 +14,7 @@ const api = {
       .get(`search/movie?api_key=${API_KEY}&page=${page}&query=${query}`)
       .then(response => response.data.results);
   },
-  getMovieById(id, page = '', option = '') {
+  getMovieById(id, option = '', page = '') {
     return axios.get(`movie/${id}${option}?api_key=${API_KEY}${page}`);
   },
 };

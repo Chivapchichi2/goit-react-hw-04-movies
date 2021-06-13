@@ -3,6 +3,7 @@ import { NavLink, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import api from '../services/moviesApi';
 import Button from '../components/Button';
+import Cast from '../components/MovieDetails/Cast';
 import MovieDetails from '../components/MovieDetails';
 import MyLoader from '../components/MyLoader';
 import Notification from '../components/Notification';
@@ -35,6 +36,7 @@ class MovieDetailsPage extends Component {
       overview,
       vote_average: average,
       vote_count: count,
+      id,
     } = movie;
     return (
       <>
@@ -78,7 +80,7 @@ class MovieDetailsPage extends Component {
             </NavLink>
           </li>
         </ul>
-        <Route path={`${match.path}/cast`} render={() => <h1>Actors</h1>} />
+        <Route path={`${match.path}/cast`} render={() => <Cast id={id} />} />
         <Route path={`${match.path}/review`} render={() => <h1>Text</h1>} />
       </>
     );
