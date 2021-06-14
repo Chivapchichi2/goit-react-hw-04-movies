@@ -1,19 +1,31 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Container from './Container';
 import Header from './Header';
-import HomePage from '../views/HomePage';
-import MoviesPage from '../views/MoviesPage';
-import MovieDetailsPage from '../views/MovieDetailsPage';
+import MyLoader from './MyLoader';
+
+const HomePage = lazy(() =>
+  import('../views/HomePage' /* webpackChunkName: "home-page" */),
+);
+const MoviesPage = lazy(() =>
+  import('../views/MoviesPage' /* webpackChunkName: "movies-page" */),
+);
+const MovieDetailsPage = lazy(() =>
+  import(
+    '../views/MovieDetailsPage' /* webpackChunkName: "movies-details-page" */
+  ),
+);
 
 const App = () => (
   <Container>
     <Header />
-    <Switch>
-      <Route exact path="/" component={HomePage} />
-      <Route path="/movies/:movieId" component={MovieDetailsPage} />
-      <Route path="/movies" component={MoviesPage} />
-    </Switch>
+    <Suspense fallback={<MyLoader />}>
+      <Switch>
+        <Route exact path="/" component={HomePage} />
+        <Route path="/movies/:movieId" component={MovieDetailsPage} />
+        <Route path="/movies" component={MoviesPage} />
+      </Switch>
+    </Suspense>
   </Container>
 );
 

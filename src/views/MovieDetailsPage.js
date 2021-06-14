@@ -25,7 +25,9 @@ class MovieDetailsPage extends Component {
 
   render() {
     const { loader, movie } = this.state;
-    const { from } = this.props.location.state;
+    const { from } = this?.props?.location?.state || {
+      from: { pathname: '/' },
+    };
     const { match } = this.props;
     const {
       title,
